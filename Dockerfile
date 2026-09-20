@@ -1,9 +1,8 @@
 FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 WORKDIR /src
-COPY YouTrackData/YouTrackData.csproj YouTrackData/
-RUN dotnet restore YouTrackData/YouTrackData.csproj
-COPY YouTrackData/ YouTrackData/
-WORKDIR /src/YouTrackData
+COPY YouTrackData.csproj .
+RUN dotnet restore YouTrackData.csproj
+COPY . .
 RUN dotnet publish -c Release -o /app/publish
 FROM mcr.microsoft.com/dotnet/runtime:10.0 AS final
 WORKDIR /app
