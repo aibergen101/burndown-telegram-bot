@@ -16,8 +16,8 @@ using var cts = new CancellationTokenSource();
 var bot = new TelegramBotClient(botToken, cancellationToken: cts.Token);
 bot.OnMessage += OnMessage;
 bot.OnUpdate += OnUpdate;
-Console.WriteLine("Press enter to stop");
-Console.ReadLine();
+Console.WriteLine("Bot is running");
+await Task.Delay(-1);
 cts.Cancel();
 
 async Task OnError(Exception exception, HandleErrorSource source)
