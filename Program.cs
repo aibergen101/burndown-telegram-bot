@@ -65,7 +65,7 @@ async Task GenerateAndSendDiagram(string chatId) {
     var finishD = DateTimeOffset.FromUnixTimeMilliseconds(sprint.Finish).DateTime;
     var range = finishD - startD;
 
-    var sprintName = "Sprints: {2026.18T} Story points: *";
+    var sprintName = "Sprints: {2026.19T} Story points: *";
     var Sprint = Uri.EscapeDataString(sprintName);
     var responseSP = await client.GetAsync($"https://acquirica.youtrack.cloud/api/issues?fields=id,resolved,customFields(name,value)&customFields=Story%20points&query={Sprint}");
     var outputSP = await responseSP.Content.ReadAsStringAsync();
