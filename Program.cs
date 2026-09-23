@@ -83,7 +83,7 @@ async Task GenerateAndSendDiagram(string chatId) {
     double totalPoints = totalStoryPoints;
 
     int currentDays = (DateTime.Now - startD).Days;
-
+    //asdh
     double[] progressLine = new double[currentDays + 1];
     progressLine[0] = totalStoryPoints;
 
