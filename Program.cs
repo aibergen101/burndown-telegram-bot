@@ -1,7 +1,7 @@
-﻿using System.Net.Http;
+﻿using Models;
+using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text.Json;
-using Models;
 using Telegram.Bot;
 using Telegram.Bot.Polling;
 using Telegram.Bot.Types;
@@ -11,11 +11,13 @@ using Telegram.Bot.Types.ReplyMarkups;
 var json = File.ReadAllText("appsettings.json");
 var config = JsonSerializer.Deserialize<Dictionary<string, string>>(json);
 var botToken = config["TelegramToken"];
+
 //telegram bot client
 using var cts = new CancellationTokenSource();
 var bot = new TelegramBotClient(botToken, cancellationToken: cts.Token);
 bot.OnMessage += OnMessage;
 bot.OnUpdate += OnUpdate;
+bot.OnError += OnError;
 Console.WriteLine("Bot is running");
 await Task.Delay(-1);
 cts.Cancel();
@@ -48,10 +50,8 @@ async Task GenerateAndSendDiagram(string chatId) {
     var botToken = config["TelegramToken"];
 
     using var client = new HttpClient();
-
     client.DefaultRequestHeaders.Authorization =
         new AuthenticationHeaderValue("Bearer", token);
-
     client.DefaultRequestHeaders.Accept.Add(
         new MediaTypeWithQualityHeaderValue("application/json"));
 
@@ -83,7 +83,7 @@ async Task GenerateAndSendDiagram(string chatId) {
     double totalPoints = totalStoryPoints;
 
     int currentDays = (DateTime.Now - startD).Days;
-    //asdh
+    
     double[] progressLine = new double[currentDays + 1];
     progressLine[0] = totalStoryPoints;
 
@@ -98,10 +98,9 @@ async Task GenerateAndSendDiagram(string chatId) {
 
         progressLine[day] = totalStoryPoints - doneSum;
     }
+
     double[] yDays = Enumerable.Range(0, currentDays + 1).Select(i => (double)i).ToArray();
     double[] xDays = Enumerable.Range(0, totalDays + 1).Select(i => (double)i).ToArray();
-
-    //ideal line 
     double[] idealLine = new double[totalDays + 1];
 
     for (int i = 0; i <= totalDays; i++)
@@ -114,7 +113,6 @@ async Task GenerateAndSendDiagram(string chatId) {
     idealScatter.Color = ScottPlot.Colors.Green;
     idealScatter.LineStyle.Pattern = ScottPlot.LinePattern.Solid;
 
-    //progress line
     var progressScatter = myPlot.Add.Scatter(yDays, progressLine);
     progressScatter.Color = ScottPlot.Colors.Blue;
     progressScatter.LineStyle.Pattern = ScottPlot.LinePattern.Solid;
@@ -124,6 +122,8 @@ async Task GenerateAndSendDiagram(string chatId) {
     await using var photoStream = File.OpenRead("diagram.png");
     await bot.SendPhoto(chatId, Telegram.Bot.Types.InputFile.FromStream(photoStream, "diagram.png"));
 }
+
+
 //telegram send 
 //var photo = @"diagram.png";
 //var url = $"https://api.telegram.org/bot{botToken}/sendPhoto";
