@@ -65,7 +65,23 @@ namespace YouTrackData
             if (update.CallbackQuery is not null)
             {
                 var query = update.CallbackQuery;
-                await _telegramBot.AnswerCallbackQuery(query.Id, $"You picked {query.Data}");
+                // Log fields/timestamp
+                Console.WriteLine($"[{DateTime.UtcNow:O}] Callback received: Id={query.Id}, Data={query.Data}, ChatId={query.Message?.Chat?.Id}, From={query.From?.Id}");
+
+                // TEMP for reproduction: uncomment to simulate delay > 60s
+                // await Task.Delay(TimeSpan.FromSeconds(70));
+
+                try
+                {
+                    await _telegramBot.AnswerCallbackQuery(query.Id, $"You picked {query.Data}");
+                    Console.WriteLine($"[{DateTime.UtcNow:O}] AnswerCallbackQuery succeeded for Id={query.Id}");
+                }
+                catch (Telegram.Bot.Exceptions.ApiRequestException ex)
+                {
+                    Console.WriteLine($"[{DateTime.UtcNow:O}] AnswerCallbackQuery failed for Id={query.Id}: {ex.Message}");
+                    // continue — we still want to generate/send diagram even if answer failed
+                }
+
                 await GenerateAndSendDiagram(query.Message!.Chat.Id.ToString(), _youTrackToken);
             }
         }
