@@ -1,0 +1,523 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v10.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v10.0": {
+      "YouTrackData/1.0.0": {
+        "dependencies": {
+          "Microsoft.Extensions.Configuration": "10.0.11",
+          "Microsoft.Extensions.Configuration.Json": "10.0.11",
+          "ScottPlot": "5.1.59",
+          "Telegram.Bot": "22.10.3"
+        },
+        "runtime": {
+          "YouTrackData.dll": {}
+        }
+      },
+      "HarfBuzzSharp/8.3.1.1": {
+        "dependencies": {
+          "HarfBuzzSharp.NativeAssets.Win32": "8.3.1.1",
+          "HarfBuzzSharp.NativeAssets.macOS": "8.3.1.1"
+        },
+        "runtime": {
+          "lib/net8.0/HarfBuzzSharp.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "8.3.1.1"
+          }
+        }
+      },
+      "HarfBuzzSharp.NativeAssets.Linux/8.3.1.1": {
+        "runtimeTargets": {
+          "runtimes/linux-arm/native/libHarfBuzzSharp.so": {
+            "rid": "linux-arm",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/linux-arm64/native/libHarfBuzzSharp.so": {
+            "rid": "linux-arm64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/linux-loongarch64/native/libHarfBuzzSharp.so": {
+            "rid": "linux-loongarch64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/linux-musl-arm/native/libHarfBuzzSharp.so": {
+            "rid": "linux-musl-arm",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/linux-musl-arm64/native/libHarfBuzzSharp.so": {
+            "rid": "linux-musl-arm64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/linux-musl-loongarch64/native/libHarfBuzzSharp.so": {
+            "rid": "linux-musl-loongarch64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/linux-musl-riscv64/native/libHarfBuzzSharp.so": {
+            "rid": "linux-musl-riscv64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/linux-musl-x64/native/libHarfBuzzSharp.so": {
+            "rid": "linux-musl-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/linux-riscv64/native/libHarfBuzzSharp.so": {
+            "rid": "linux-riscv64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/linux-x64/native/libHarfBuzzSharp.so": {
+            "rid": "linux-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/linux-x86/native/libHarfBuzzSharp.so": {
+            "rid": "linux-x86",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          }
+        }
+      },
+      "HarfBuzzSharp.NativeAssets.macOS/8.3.1.1": {
+        "runtimeTargets": {
+          "runtimes/osx/native/libHarfBuzzSharp.dylib": {
+            "rid": "osx",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          }
+        }
+      },
+      "HarfBuzzSharp.NativeAssets.Win32/8.3.1.1": {
+        "runtimeTargets": {
+          "runtimes/win-arm64/native/libHarfBuzzSharp.dll": {
+            "rid": "win-arm64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/win-x64/native/libHarfBuzzSharp.dll": {
+            "rid": "win-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/win-x86/native/libHarfBuzzSharp.dll": {
+            "rid": "win-x86",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          }
+        }
+      },
+      "Microsoft.Extensions.Configuration/10.0.11": {
+        "dependencies": {
+          "Microsoft.Extensions.Configuration.Abstractions": "10.0.11",
+          "Microsoft.Extensions.Primitives": "10.0.11"
+        },
+        "runtime": {
+          "lib/net10.0/Microsoft.Extensions.Configuration.dll": {
+            "assemblyVersion": "10.0.0.0",
+            "fileVersion": "10.0.1126.37416"
+          }
+        }
+      },
+      "Microsoft.Extensions.Configuration.Abstractions/10.0.11": {
+        "dependencies": {
+          "Microsoft.Extensions.Primitives": "10.0.11"
+        },
+        "runtime": {
+          "lib/net10.0/Microsoft.Extensions.Configuration.Abstractions.dll": {
+            "assemblyVersion": "10.0.0.0",
+            "fileVersion": "10.0.1126.37416"
+          }
+        }
+      },
+      "Microsoft.Extensions.Configuration.FileExtensions/10.0.11": {
+        "dependencies": {
+          "Microsoft.Extensions.Configuration": "10.0.11",
+          "Microsoft.Extensions.Configuration.Abstractions": "10.0.11",
+          "Microsoft.Extensions.FileProviders.Abstractions": "10.0.11",
+          "Microsoft.Extensions.FileProviders.Physical": "10.0.11",
+          "Microsoft.Extensions.Primitives": "10.0.11"
+        },
+        "runtime": {
+          "lib/net10.0/Microsoft.Extensions.Configuration.FileExtensions.dll": {
+            "assemblyVersion": "10.0.0.0",
+            "fileVersion": "10.0.1126.37416"
+          }
+        }
+      },
+      "Microsoft.Extensions.Configuration.Json/10.0.11": {
+        "dependencies": {
+          "Microsoft.Extensions.Configuration": "10.0.11",
+          "Microsoft.Extensions.Configuration.Abstractions": "10.0.11",
+          "Microsoft.Extensions.Configuration.FileExtensions": "10.0.11",
+          "Microsoft.Extensions.FileProviders.Abstractions": "10.0.11"
+        },
+        "runtime": {
+          "lib/net10.0/Microsoft.Extensions.Configuration.Json.dll": {
+            "assemblyVersion": "10.0.0.0",
+            "fileVersion": "10.0.1126.37416"
+          }
+        }
+      },
+      "Microsoft.Extensions.DependencyInjection.Abstractions/8.0.0": {
+        "runtime": {
+          "lib/net8.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll": {
+            "assemblyVersion": "8.0.0.0",
+            "fileVersion": "8.0.23.53103"
+          }
+        }
+      },
+      "Microsoft.Extensions.FileProviders.Abstractions/10.0.11": {
+        "dependencies": {
+          "Microsoft.Extensions.Primitives": "10.0.11"
+        },
+        "runtime": {
+          "lib/net10.0/Microsoft.Extensions.FileProviders.Abstractions.dll": {
+            "assemblyVersion": "10.0.0.0",
+            "fileVersion": "10.0.1126.37416"
+          }
+        }
+      },
+      "Microsoft.Extensions.FileProviders.Physical/10.0.11": {
+        "dependencies": {
+          "Microsoft.Extensions.FileProviders.Abstractions": "10.0.11",
+          "Microsoft.Extensions.FileSystemGlobbing": "10.0.11",
+          "Microsoft.Extensions.Primitives": "10.0.11"
+        },
+        "runtime": {
+          "lib/net10.0/Microsoft.Extensions.FileProviders.Physical.dll": {
+            "assemblyVersion": "10.0.0.0",
+            "fileVersion": "10.0.1126.37416"
+          }
+        }
+      },
+      "Microsoft.Extensions.FileSystemGlobbing/10.0.11": {
+        "runtime": {
+          "lib/net10.0/Microsoft.Extensions.FileSystemGlobbing.dll": {
+            "assemblyVersion": "10.0.0.0",
+            "fileVersion": "10.0.1126.37416"
+          }
+        }
+      },
+      "Microsoft.Extensions.Options/8.0.0": {
+        "dependencies": {
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "8.0.0",
+          "Microsoft.Extensions.Primitives": "10.0.11"
+        },
+        "runtime": {
+          "lib/net8.0/Microsoft.Extensions.Options.dll": {
+            "assemblyVersion": "8.0.0.0",
+            "fileVersion": "8.0.23.53103"
+          }
+        }
+      },
+      "Microsoft.Extensions.Primitives/10.0.11": {
+        "runtime": {
+          "lib/net10.0/Microsoft.Extensions.Primitives.dll": {
+            "assemblyVersion": "10.0.0.0",
+            "fileVersion": "10.0.1126.37416"
+          }
+        }
+      },
+      "ScottPlot/5.1.59": {
+        "dependencies": {
+          "HarfBuzzSharp.NativeAssets.Linux": "8.3.1.1",
+          "SkiaSharp": "3.119.0",
+          "SkiaSharp.HarfBuzz": "3.119.0",
+          "SkiaSharp.NativeAssets.Linux.NoDependencies": "3.119.0"
+        },
+        "runtime": {
+          "lib/net10.0/ScottPlot.dll": {
+            "assemblyVersion": "5.1.59.0",
+            "fileVersion": "5.1.59.0"
+          }
+        }
+      },
+      "SkiaSharp/3.119.0": {
+        "dependencies": {
+          "SkiaSharp.NativeAssets.Win32": "3.119.0",
+          "SkiaSharp.NativeAssets.macOS": "3.119.0"
+        },
+        "runtime": {
+          "lib/net8.0/SkiaSharp.dll": {
+            "assemblyVersion": "3.119.0.0",
+            "fileVersion": "3.119.0.0"
+          }
+        }
+      },
+      "SkiaSharp.HarfBuzz/3.119.0": {
+        "dependencies": {
+          "HarfBuzzSharp": "8.3.1.1",
+          "SkiaSharp": "3.119.0"
+        },
+        "runtime": {
+          "lib/net8.0/SkiaSharp.HarfBuzz.dll": {
+            "assemblyVersion": "3.119.0.0",
+            "fileVersion": "3.119.0.0"
+          }
+        }
+      },
+      "SkiaSharp.NativeAssets.Linux.NoDependencies/3.119.0": {
+        "runtimeTargets": {
+          "runtimes/linux-arm/native/libSkiaSharp.so": {
+            "rid": "linux-arm",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/linux-arm64/native/libSkiaSharp.so": {
+            "rid": "linux-arm64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/linux-loongarch64/native/libSkiaSharp.so": {
+            "rid": "linux-loongarch64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/linux-musl-arm/native/libSkiaSharp.so": {
+            "rid": "linux-musl-arm",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/linux-musl-arm64/native/libSkiaSharp.so": {
+            "rid": "linux-musl-arm64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/linux-musl-loongarch64/native/libSkiaSharp.so": {
+            "rid": "linux-musl-loongarch64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/linux-musl-riscv64/native/libSkiaSharp.so": {
+            "rid": "linux-musl-riscv64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/linux-musl-x64/native/libSkiaSharp.so": {
+            "rid": "linux-musl-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/linux-riscv64/native/libSkiaSharp.so": {
+            "rid": "linux-riscv64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/linux-x64/native/libSkiaSharp.so": {
+            "rid": "linux-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/linux-x86/native/libSkiaSharp.so": {
+            "rid": "linux-x86",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          }
+        }
+      },
+      "SkiaSharp.NativeAssets.macOS/3.119.0": {
+        "runtimeTargets": {
+          "runtimes/osx/native/libSkiaSharp.dylib": {
+            "rid": "osx",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          }
+        }
+      },
+      "SkiaSharp.NativeAssets.Win32/3.119.0": {
+        "runtimeTargets": {
+          "runtimes/win-arm64/native/libSkiaSharp.dll": {
+            "rid": "win-arm64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/win-x64/native/libSkiaSharp.dll": {
+            "rid": "win-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/win-x86/native/libSkiaSharp.dll": {
+            "rid": "win-x86",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          }
+        }
+      },
+      "Telegram.Bot/22.10.3": {
+        "dependencies": {
+          "Microsoft.Extensions.Options": "8.0.0"
+        },
+        "runtime": {
+          "lib/net6.0/Telegram.Bot.dll": {
+            "assemblyVersion": "22.10.3.0",
+            "fileVersion": "22.10.3.0"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "YouTrackData/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "HarfBuzzSharp/8.3.1.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-tLZN66oe/uiRPTZfrCU4i8ScVGwqHNh5MHrXj0yVf4l7Mz0FhTGnQ71RGySROTmdognAs0JtluHkL41pIabWuQ==",
+      "path": "harfbuzzsharp/8.3.1.1",
+      "hashPath": "harfbuzzsharp.8.3.1.1.nupkg.sha512"
+    },
+    "HarfBuzzSharp.NativeAssets.Linux/8.3.1.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-3EZ1mpIiKWRLL5hUYA82ZHteeDIVaEA/Z0rA/wU6tjx6crcAkJnBPwDXZugBSfo8+J3EznvRJf49uMsqYfKrHg==",
+      "path": "harfbuzzsharp.nativeassets.linux/8.3.1.1",
+      "hashPath": "harfbuzzsharp.nativeassets.linux.8.3.1.1.nupkg.sha512"
+    },
+    "HarfBuzzSharp.NativeAssets.macOS/8.3.1.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-jbtCsgftcaFLCA13tVKo5iWdElJScrulLTKJre36O4YQTIlwDtPPqhRZNk+Y0vv4D1gxbscasGRucUDfS44ofQ==",
+      "path": "harfbuzzsharp.nativeassets.macos/8.3.1.1",
+      "hashPath": "harfbuzzsharp.nativeassets.macos.8.3.1.1.nupkg.sha512"
+    },
+    "HarfBuzzSharp.NativeAssets.Win32/8.3.1.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-UsJtQsfAJoFDZrXc4hCUfRPMqccfKZ0iumJ/upcUjz/cmsTgVFGNEL5yaJWmkqsuFYdMWbj/En5/kS4PFl9hBA==",
+      "path": "harfbuzzsharp.nativeassets.win32/8.3.1.1",
+      "hashPath": "harfbuzzsharp.nativeassets.win32.8.3.1.1.nupkg.sha512"
+    },
+    "Microsoft.Extensions.Configuration/10.0.11": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-wlhRqZW8LcJPa+vk2oLAc/REXDItHtkFQdf/QcXYGZbZOO13izcsKY1pCvuFQYwUiZD+hwSZwsKASjqT+BNaVg==",
+      "path": "microsoft.extensions.configuration/10.0.11",
+      "hashPath": "microsoft.extensions.configuration.10.0.11.nupkg.sha512"
+    },
+    "Microsoft.Extensions.Configuration.Abstractions/10.0.11": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-fVi053xdpda9Em7vSkmgVxO/PtgC2m78ekReKWsgcyskqY0U82Bz/MONwxpGzI0hElYKJfw+fupqMVeKW3fSaA==",
+      "path": "microsoft.extensions.configuration.abstractions/10.0.11",
+      "hashPath": "microsoft.extensions.configuration.abstractions.10.0.11.nupkg.sha512"
+    },
+    "Microsoft.Extensions.Configuration.FileExtensions/10.0.11": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-mDW7KVFB05M6jiRUyaZiOMWhS31n5HlSZwoYctHAZAucD4sMDJ70IxOmkGDt6RpstchD+keWBjhdzcMpSkWvWQ==",
+      "path": "microsoft.extensions.configuration.fileextensions/10.0.11",
+      "hashPath": "microsoft.extensions.configuration.fileextensions.10.0.11.nupkg.sha512"
+    },
+    "Microsoft.Extensions.Configuration.Json/10.0.11": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-nSPrT8U/cNoB4coqkmnanAMK9PsL7lsjG+LLUKEwHRFwS6E78b8S1wdv/y88EOxBhasWov1rLd7RTHmmsYPOLg==",
+      "path": "microsoft.extensions.configuration.json/10.0.11",
+      "hashPath": "microsoft.extensions.configuration.json.10.0.11.nupkg.sha512"
+    },
+    "Microsoft.Extensions.DependencyInjection.Abstractions/8.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-cjWrLkJXK0rs4zofsK4bSdg+jhDLTaxrkXu4gS6Y7MAlCvRyNNgwY/lJi5RDlQOnSZweHqoyvgvbdvQsRIW+hg==",
+      "path": "microsoft.extensions.dependencyinjection.abstractions/8.0.0",
+      "hashPath": "microsoft.extensions.dependencyinjection.abstractions.8.0.0.nupkg.sha512"
+    },
+    "Microsoft.Extensions.FileProviders.Abstractions/10.0.11": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-JOjac6SQQgZmdmB8WGEw61/7siqMZoWJMkmq2p1goJGxqI59lO6oB4bOl0jNsbaPBdYy5Mlkb+6U7T4+CjnD8Q==",
+      "path": "microsoft.extensions.fileproviders.abstractions/10.0.11",
+      "hashPath": "microsoft.extensions.fileproviders.abstractions.10.0.11.nupkg.sha512"
+    },
+    "Microsoft.Extensions.FileProviders.Physical/10.0.11": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-Tq/UqMaczePv9yWwSsJZRgKtgA46djVR5xHj/lZBCueQ3ag8f9v5mu0EdhrNx7tXxNk+Y9OurG2oKuSKINjr0A==",
+      "path": "microsoft.extensions.fileproviders.physical/10.0.11",
+      "hashPath": "microsoft.extensions.fileproviders.physical.10.0.11.nupkg.sha512"
+    },
+    "Microsoft.Extensions.FileSystemGlobbing/10.0.11": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-2i6rtW/B5rCnWCnhdmWWEmaM9O0HD0zsPY9eRqa++y4tclI3Uw8zvGbBvhY/LjAdtf8gUHhUPcAWj3DRlWMXmQ==",
+      "path": "microsoft.extensions.filesystemglobbing/10.0.11",
+      "hashPath": "microsoft.extensions.filesystemglobbing.10.0.11.nupkg.sha512"
+    },
+    "Microsoft.Extensions.Options/8.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-JOVOfqpnqlVLUzINQ2fox8evY2SKLYJ3BV8QDe/Jyp21u1T7r45x/R/5QdteURMR5r01GxeJSBBUOCOyaNXA3g==",
+      "path": "microsoft.extensions.options/8.0.0",
+      "hashPath": "microsoft.extensions.options.8.0.0.nupkg.sha512"
+    },
+    "Microsoft.Extensions.Primitives/10.0.11": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-SXcz+kF+4Oo9b1+55zntpJFYfwb1jw66ioxptyNOOTDc8g2FHnBFWjZpsWfCvZIhzr0x+4e2trVTs4OKwQfBtw==",
+      "path": "microsoft.extensions.primitives/10.0.11",
+      "hashPath": "microsoft.extensions.primitives.10.0.11.nupkg.sha512"
+    },
+    "ScottPlot/5.1.59": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-a2xnmMNfhspakKobDfAX5s1GPLFgmEXtRewR9p6bWM91QuCxF5SjHnDbixAcZoU50LPicrCe04sWzIVzdSrmNw==",
+      "path": "scottplot/5.1.59",
+      "hashPath": "scottplot.5.1.59.nupkg.sha512"
+    },
+    "SkiaSharp/3.119.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-gR9yVoOta2Mc1Rxt15LD65AckfHMfwjIs/3kkD59C9bT2nYYISsE6uz3t4aMPNHA6CgsIL0Ssn+jE5OVilZ1yw==",
+      "path": "skiasharp/3.119.0",
+      "hashPath": "skiasharp.3.119.0.nupkg.sha512"
+    },
+    "SkiaSharp.HarfBuzz/3.119.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-5ocGzl+RYEZFnUPUbModshnEFvKTku4hTtOBsLvy5MCK2KAHjq5Nw2+uAVUx79Rjh0z8fTojT6ZVav8MJgW0ug==",
+      "path": "skiasharp.harfbuzz/3.119.0",
+      "hashPath": "skiasharp.harfbuzz.3.119.0.nupkg.sha512"
+    },
+    "SkiaSharp.NativeAssets.Linux.NoDependencies/3.119.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-e92vdqf1VOETPjy1T67Fs1zPxfGMM1nbrpt69GM5foXSI/iIbq6L9avPz/bl/DbWtb81D0yF/NKjRmXuOZoLcg==",
+      "path": "skiasharp.nativeassets.linux.nodependencies/3.119.0",
+      "hashPath": "skiasharp.nativeassets.linux.nodependencies.3.119.0.nupkg.sha512"
+    },
+    "SkiaSharp.NativeAssets.macOS/3.119.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-YE1vNn0Nyw2PWtv7hw1PYkKJO0itFiQp9vSqGppZUKzQJqwp28a2jgdCMPfYtOiR8KCnDgZqQoynqJRRaE2ZVg==",
+      "path": "skiasharp.nativeassets.macos/3.119.0",
+      "hashPath": "skiasharp.nativeassets.macos.3.119.0.nupkg.sha512"
+    },
+    "SkiaSharp.NativeAssets.Win32/3.119.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-IwC9yx36lOdXVT2DjgmWHl1qkVspfj8ctd4+li8CNnvqdfaTolXCOh6TLznURcPAvzatx9K/tLOB7zT6T8EA9w==",
+      "path": "skiasharp.nativeassets.win32/3.119.0",
+      "hashPath": "skiasharp.nativeassets.win32.3.119.0.nupkg.sha512"
+    },
+    "Telegram.Bot/22.10.3": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-ni2Jf5AJIl7P+kcjyKplu/5HVSg/rqy3C9TWWsYXKuNaFtp16+H5ZhlwCRHcxIooeuNBPka3MaDd7LOTXE5h2w==",
+      "path": "telegram.bot/22.10.3",
+      "hashPath": "telegram.bot.22.10.3.nupkg.sha512"
+    }
+  }
+}

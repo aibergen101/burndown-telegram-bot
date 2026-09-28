@@ -1,0 +1,30 @@
+{
+  "version": 2,
+  "dgSpecHash": "2TRKSTjOz7k=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\ayber\\TelegramApi\\YouTrackData\\YouTrackData.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\ayber\\.nuget\\packages\\harfbuzzsharp\\8.3.1.1\\harfbuzzsharp.8.3.1.1.nupkg.sha512",
+    "C:\\Users\\ayber\\.nuget\\packages\\harfbuzzsharp.nativeassets.linux\\8.3.1.1\\harfbuzzsharp.nativeassets.linux.8.3.1.1.nupkg.sha512",
+    "C:\\Users\\ayber\\.nuget\\packages\\harfbuzzsharp.nativeassets.macos\\8.3.1.1\\harfbuzzsharp.nativeassets.macos.8.3.1.1.nupkg.sha512",
+    "C:\\Users\\ayber\\.nuget\\packages\\harfbuzzsharp.nativeassets.win32\\8.3.1.1\\harfbuzzsharp.nativeassets.win32.8.3.1.1.nupkg.sha512",
+    "C:\\Users\\ayber\\.nuget\\packages\\microsoft.extensions.configuration\\10.0.11\\microsoft.extensions.configuration.10.0.11.nupkg.sha512",
+    "C:\\Users\\ayber\\.nuget\\packages\\microsoft.extensions.configuration.abstractions\\10.0.11\\microsoft.extensions.configuration.abstractions.10.0.11.nupkg.sha512",
+    "C:\\Users\\ayber\\.nuget\\packages\\microsoft.extensions.configuration.fileextensions\\10.0.11\\microsoft.extensions.configuration.fileextensions.10.0.11.nupkg.sha512",
+    "C:\\Users\\ayber\\.nuget\\packages\\microsoft.extensions.configuration.json\\10.0.11\\microsoft.extensions.configuration.json.10.0.11.nupkg.sha512",
+    "C:\\Users\\ayber\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\8.0.0\\microsoft.extensions.dependencyinjection.abstractions.8.0.0.nupkg.sha512",
+    "C:\\Users\\ayber\\.nuget\\packages\\microsoft.extensions.fileproviders.abstractions\\10.0.11\\microsoft.extensions.fileproviders.abstractions.10.0.11.nupkg.sha512",
+    "C:\\Users\\ayber\\.nuget\\packages\\microsoft.extensions.fileproviders.physical\\10.0.11\\microsoft.extensions.fileproviders.physical.10.0.11.nupkg.sha512",
+    "C:\\Users\\ayber\\.nuget\\packages\\microsoft.extensions.filesystemglobbing\\10.0.11\\microsoft.extensions.filesystemglobbing.10.0.11.nupkg.sha512",
+    "C:\\Users\\ayber\\.nuget\\packages\\microsoft.extensions.options\\8.0.0\\microsoft.extensions.options.8.0.0.nupkg.sha512",
+    "C:\\Users\\ayber\\.nuget\\packages\\microsoft.extensions.primitives\\10.0.11\\microsoft.extensions.primitives.10.0.11.nupkg.sha512",
+    "C:\\Users\\ayber\\.nuget\\packages\\scottplot\\5.1.59\\scottplot.5.1.59.nupkg.sha512",
+    "C:\\Users\\ayber\\.nuget\\packages\\skiasharp\\3.119.0\\skiasharp.3.119.0.nupkg.sha512",
+    "C:\\Users\\ayber\\.nuget\\packages\\skiasharp.harfbuzz\\3.119.0\\skiasharp.harfbuzz.3.119.0.nupkg.sha512",
+    "C:\\Users\\ayber\\.nuget\\packages\\skiasharp.nativeassets.linux.nodependencies\\3.119.0\\skiasharp.nativeassets.linux.nodependencies.3.119.0.nupkg.sha512",
+    "C:\\Users\\ayber\\.nuget\\packages\\skiasharp.nativeassets.macos\\3.119.0\\skiasharp.nativeassets.macos.3.119.0.nupkg.sha512",
+    "C:\\Users\\ayber\\.nuget\\packages\\skiasharp.nativeassets.win32\\3.119.0\\skiasharp.nativeassets.win32.3.119.0.nupkg.sha512",
+    "C:\\Users\\ayber\\.nuget\\packages\\telegram.bot\\22.10.3\\telegram.bot.22.10.3.nupkg.sha512"
+  ],
+  "logs": []
+}
