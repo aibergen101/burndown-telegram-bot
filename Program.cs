@@ -1,13 +1,16 @@
-﻿using Models;
+﻿using Microsoft.Extensions.Configuration;
+using Models;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text.Json;
 using Telegram.Bot;
+using Telegram.Bot.Exceptions;
 using Telegram.Bot.Polling;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.ReplyMarkups;
 using YouTrackData;
+using Microsoft.Extensions.Configuration;
 
 var (youTrackToken, telegramToken) = UpdateHandler.ReadConfig();
 
@@ -62,27 +65,33 @@ namespace YouTrackData
         }
         public async Task OnUpdate(Update update)
         {
-            if (update.CallbackQuery is not null)
+            if (update.CallbackQuery is not { } query)
+                return;
+
+            if (query.Message is null)
+                return;
+
+            var chatId = query.Message.Chat.Id.ToString();
+
+            try
             {
-                var query = update.CallbackQuery;
-                // Log fields/timestamp
-                Console.WriteLine($"[{DateTime.UtcNow:O}] Callback received: Id={query.Id}, Data={query.Data}, ChatId={query.Message?.Chat?.Id}, From={query.From?.Id}");
+                await _telegramBot.AnswerCallbackQuery(query.Id, $"You picked {query.Data}");
+            }
+            catch (ApiRequestException ex)
+            {
+                // Callback устарел или его уже обработал другой экземпляр бота.
+                // Не критично: диаграмму всё равно отправляем.
+                Console.WriteLine($"AnswerCallbackQuery failed (Id={query.Id}): {ex.Message}");
+            }
 
-                // TEMP for reproduction: uncomment to simulate delay > 60s
-                // await Task.Delay(TimeSpan.FromSeconds(70));
-
-                try
-                {
-                    await _telegramBot.AnswerCallbackQuery(query.Id, $"You picked {query.Data}");
-                    Console.WriteLine($"[{DateTime.UtcNow:O}] AnswerCallbackQuery succeeded for Id={query.Id}");
-                }
-                catch (Telegram.Bot.Exceptions.ApiRequestException ex)
-                {
-                    Console.WriteLine($"[{DateTime.UtcNow:O}] AnswerCallbackQuery failed for Id={query.Id}: {ex.Message}");
-                    // continue — we still want to generate/send diagram even if answer failed
-                }
-
-                await GenerateAndSendDiagram(query.Message!.Chat.Id.ToString(), _youTrackToken);
+            try
+            {
+                await GenerateAndSendDiagram(chatId, _youTrackToken);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                await _telegramBot.SendMessage(chatId, "Не удалось построить диаграмму, попробуйте позже");
             }
         }
         public async Task GenerateAndSendDiagram(string chatId, string youTrackToken)
@@ -167,11 +176,17 @@ namespace YouTrackData
 
         public static (string youTrackToken, string telegramToken) ReadConfig()
         {
-            var json = File.ReadAllText("appsettings.json");
-            var config = JsonSerializer.Deserialize<Dictionary<string, string>>(json);
-            var youTrackToken = config["YouTrackToken"];
-            var telegramToken = config["TelegramToken"];
-            return (youTrackToken, telegramToken); 
+            var config = new ConfigurationBuilder()
+                .AddJsonFile("appsettings.json", optional: true)
+                .AddEnvironmentVariables()
+                .Build();
+
+            var youTrackToken = config["YouTrackToken"]
+                ?? throw new InvalidOperationException("YouTrackToken is not configured");
+            var telegramToken = config["TelegramToken"]
+                ?? throw new InvalidOperationException("TelegramToken is not configured");
+
+            return (youTrackToken, telegramToken);
         }
     }
 
