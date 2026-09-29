@@ -10,9 +10,9 @@ using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.ReplyMarkups;
 using YouTrackData;
-using Microsoft.Extensions.Configuration;
 
-var (youTrackToken, telegramToken) = UpdateHandler.ReadConfig();
+
+var (youTrackToken, telegramToken, chatId) = UpdateHandler.ReadConfig();
 
 // Create a cancellation token source to handle graceful shutdown 
 using var cts = new CancellationTokenSource();
@@ -20,10 +20,34 @@ var telegramBot = new TelegramBotClient(telegramToken, cancellationToken: cts.To
 var handler =new UpdateHandler(telegramBot,youTrackToken);
 handler.Start();
 
+var schedulerTask = Scheduler(handler, chatId, youTrackToken, cts.Token);
+
 Console.WriteLine("Bot is running");
 await Task.Delay(-1);
-cts.Cancel();
 
+static async Task Scheduler(UpdateHandler handler, string chatId, string youTrackToken, CancellationToken token)
+{
+    while (!token.IsCancellationRequested)
+    {
+        var now = DateTime.Now;
+        var time = now.Date.AddHours(23).AddMinutes(20);
+        if (now >= time) time = time.AddDays(1);
+
+        try
+        {
+            await Task.Delay(time - now, token);
+            await handler.GenerateAndSendDiagram(chatId, youTrackToken);
+        }
+        catch (OperationCanceledException)
+        {
+            break;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error in time sending diagram: {ex}");
+        }
+    }
+}
 
 namespace YouTrackData
 {
@@ -174,7 +198,7 @@ namespace YouTrackData
             await _telegramBot.SendPhoto(chatId, Telegram.Bot.Types.InputFile.FromStream(photoStream, "diagram.png"));
         }
 
-        public static (string youTrackToken, string telegramToken) ReadConfig()
+        public static (string youTrackToken, string telegramToken, string chatId) ReadConfig()
         {
             var config = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json", optional: true)
@@ -185,11 +209,12 @@ namespace YouTrackData
                 ?? throw new InvalidOperationException("YouTrackToken is not configured");
             var telegramToken = config["TelegramToken"]
                 ?? throw new InvalidOperationException("TelegramToken is not configured");
+            var chatId = config["ChatId"]
+                ?? throw new InvalidOperationException("ChatId is not configured");
 
-            return (youTrackToken, telegramToken);
+            return (youTrackToken, telegramToken, chatId);
         }
     }
-
     //telegram send 
     //var photo = @"diagram.png";
     //var url = $"https://api.telegram.org/bot{botToken}/sendPhoto";
