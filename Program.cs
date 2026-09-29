@@ -24,13 +24,14 @@ var schedulerTask = Scheduler(handler, chatId, youTrackToken, cts.Token);
 
 Console.WriteLine("Bot is running");
 await Task.Delay(-1);
+cts.Cancel();
 
 static async Task Scheduler(UpdateHandler handler, string chatId, string youTrackToken, CancellationToken token)
 {
     while (!token.IsCancellationRequested)
     {
         var now = DateTime.Now;
-        var time = now.Date.AddHours(23).AddMinutes(20);
+        var time = now.Date.AddHours(23).AddMinutes(38);
         if (now >= time) time = time.AddDays(1);
 
         try
