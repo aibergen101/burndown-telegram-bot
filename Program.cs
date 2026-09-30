@@ -31,7 +31,7 @@ static async Task Scheduler(UpdateHandler handler, string chatId, string youTrac
     while (!token.IsCancellationRequested)
     {
         var now = DateTime.Now;
-        var time = now.Date.AddHours(10).AddMinutes(10);
+        var time = now.Date.AddHours(10).AddMinutes(14);
         if (now >= time) time = time.AddDays(1);
 
         try
