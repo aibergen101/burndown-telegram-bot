@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Models;
-using System.Net.Http;
+using Scheduling;
 using System.Net.Http.Headers;
 using System.Text.Json;
 using Telegram.Bot;
@@ -11,58 +11,70 @@ using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.ReplyMarkups;
 using YouTrackData;
 
+var (youTrackToken, telegramToken, chatId) = ConfigReader.ReadConfig();
 
-var (youTrackToken, telegramToken, chatId) = UpdateHandler.ReadConfig();
-
-// Create a cancellation token source to handle graceful shutdown 
 using var cts = new CancellationTokenSource();
 var telegramBot = new TelegramBotClient(telegramToken, cancellationToken: cts.Token);
-var handler =new UpdateHandler(telegramBot,youTrackToken);
-handler.Start();
+var youTrackClient = new YouTrackClient(youTrackToken);
+var diagramGenerator = new DiagramGenerator(telegramBot,youTrackClient);
+var updateHandler = new UpdateHandler(telegramBot, diagramGenerator);
 
-var schedulerTask = Scheduler(handler, chatId, youTrackToken, cts.Token);
+updateHandler.Start();
+var scheduler = new DailyScheduler(diagramGenerator, chatId);
+var schedulerTask = scheduler.Scheduler(cts.Token);
 
 Console.WriteLine("Bot is running");
 await Task.Delay(-1);
 cts.Cancel();
 
-static async Task Scheduler(UpdateHandler handler, string chatId, string youTrackToken, CancellationToken token)
+namespace Scheduling
 {
-    while (!token.IsCancellationRequested)
+    public class DailyScheduler
     {
-        var now = DateTime.Now;
-        var time = now.Date.AddHours(10).AddMinutes(14);
-        if (now >= time) time = time.AddDays(1);
+        private readonly DiagramGenerator _diagramGenerator;
+        private readonly string _chatId;
+        public DailyScheduler(DiagramGenerator diagramGenerator, string chatId)
+        {
+            _chatId = chatId;
+            _diagramGenerator = diagramGenerator;
+        }
+        public async Task Scheduler(CancellationToken token)
+        {
+            while (!token.IsCancellationRequested)
+            {
+                var now = DateTime.Now;
+                var time = now.Date.AddHours(10).AddMinutes(14);
+                if (now >= time) time = time.AddDays(1);
 
-        try
-        {
-            await Task.Delay(time - now, token);
-            await handler.GenerateAndSendDiagram(chatId, youTrackToken);
-        }
-        catch (OperationCanceledException)
-        {
-            break;
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Error in time sending diagram: {ex}");
+                try
+                {
+                    await Task.Delay(time - now, token);
+                    await _diagramGenerator.GenerateAndSendDiagram(_chatId);
+                }
+                catch (OperationCanceledException)
+                {
+                    break;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error in time sending diagram: {ex}");
+                }
+            }
         }
     }
 }
 
 namespace YouTrackData
 {
-    //разделить на отдельные классы, так как класс выполняет несколько функций:
-    //обработка обновлений, генерация диаграммы, чтение конфигурации
     public class UpdateHandler
     {
         private readonly ITelegramBotClient _telegramBot;
-        private readonly string _youTrackToken;
+        private readonly DiagramGenerator _diagramGenerator;
 
-        public UpdateHandler(ITelegramBotClient telegramBot, string youTrackToken)
+        public UpdateHandler(ITelegramBotClient telegramBot, DiagramGenerator diagramGenerator)
         {
             _telegramBot = telegramBot;
-            _youTrackToken = youTrackToken;
+            _diagramGenerator = diagramGenerator;
         }
 
         public void Start()
@@ -104,14 +116,12 @@ namespace YouTrackData
             }
             catch (ApiRequestException ex)
             {
-                // Callback устарел или его уже обработал другой экземпляр бота.
-                // Не критично: диаграмму всё равно отправляем.
                 Console.WriteLine($"AnswerCallbackQuery failed (Id={query.Id}): {ex.Message}");
             }
 
             try
             {
-                await GenerateAndSendDiagram(chatId, _youTrackToken);
+                await _diagramGenerator.GenerateAndSendDiagram(chatId);
             }
             catch (Exception ex)
             {
@@ -119,34 +129,48 @@ namespace YouTrackData
                 await _telegramBot.SendMessage(chatId, "Не удалось построить диаграмму, попробуйте позже");
             }
         }
-        public async Task GenerateAndSendDiagram(string chatId, string youTrackToken)
+    }
+    public class YouTrackClient
+    {
+        private readonly HttpClient _httpClient;
+        public YouTrackClient(string youTrackToken)
         {
-            // Create HttpClient to interact with YouTrack API
-            using var httpClient = new HttpClient();
-            httpClient.DefaultRequestHeaders.Authorization =
+            _httpClient = new HttpClient();
+            _httpClient.DefaultRequestHeaders.Authorization =
                 new AuthenticationHeaderValue("Bearer", youTrackToken);
-            httpClient.DefaultRequestHeaders.Accept.Add(
+            _httpClient.DefaultRequestHeaders.Accept.Add(
                 new MediaTypeWithQualityHeaderValue("application/json"));
+        }
 
-            // Get sprint duration
-            var sprintDuration = await httpClient.GetAsync("https://acquirica.youtrack.cloud/api/agiles/176-23/sprints/current?fields=start,finish");
+        public async Task<Sprint> GetSprintDuration()
+        {
+            var sprintDuration = await _httpClient.GetAsync("https://acquirica.youtrack.cloud/api/agiles/176-23/sprints/current?fields=start,finish");
             var outputDuration = await sprintDuration.Content.ReadAsStringAsync();
+            return JsonSerializer.Deserialize<Sprint>(outputDuration, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+        }
 
-            var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
-            var sprintDate = JsonSerializer.Deserialize<Sprint>(outputDuration, options);
-
-            var startDate = DateTimeOffset.FromUnixTimeMilliseconds(sprintDate.Start).DateTime;
-            var finishDate = DateTimeOffset.FromUnixTimeMilliseconds(sprintDate.Finish).DateTime;
-            var sprintRange = finishDate - startDate;
-
-            // Get issues in the sprint and their story points
-            var sprintData = "Sprints: {2026.19T} Story points: *";
-            var sprintName = Uri.EscapeDataString(sprintData);
-            var sprintStoryPoints = await httpClient.GetAsync($"https://acquirica.youtrack.cloud/api/issues?fields=id,resolved,customFields(name,value)&customFields=Story%20points&query={sprintName}");
+        public async Task<Issue[]> GetSprintIssues()
+        {
+            var sprintName = Uri.EscapeDataString("Sprints: {2026.19T} Story points: *");
+            var sprintStoryPoints = await _httpClient.GetAsync($"https://acquirica.youtrack.cloud/api/issues?fields=id,resolved,customFields(name,value)&customFields=Story%20points&query={sprintName}");
             var outputStoryPoints = await sprintStoryPoints.Content.ReadAsStringAsync();
-            var issues = JsonSerializer.Deserialize<Issue[]>(outputStoryPoints, options);
-
-            // Calculate total story points
+            return JsonSerializer.Deserialize<Issue[]>(outputStoryPoints, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+        }
+    }
+    public class BurndownData
+    {
+        public double[] XDays { get; set; }
+        public double[] YDays { get; set; }
+        public double[] IdealLine { get; set; }
+        public double[] ProgressLine { get; set; }
+    }
+    public class BurndownCalculator
+    {
+        public BurndownData CalculateBurndown(Sprint sprint, Issue[] issues)
+        { 
+            var startDate = DateTimeOffset.FromUnixTimeMilliseconds(sprint.Start).DateTime;
+            var finishDate = DateTimeOffset.FromUnixTimeMilliseconds(sprint.Finish).DateTime;
+    
             int totalStoryPoints = 0;
             foreach (var issue in issues)
             {
@@ -182,14 +206,38 @@ namespace YouTrackData
             {
                 idealLine[i] = totalPoints - (totalPoints / totalDays) * i;
             }
+            return new BurndownData
+            {
+                XDays = xDays,
+                YDays = yDays,
+                IdealLine = idealLine,
+                ProgressLine = progressLine
+            };
+        }
+    }
+    public class DiagramGenerator
+    {
+        private readonly ITelegramBotClient _telegramBot;
+        private readonly YouTrackClient _youTrackClient;
+        private readonly BurndownCalculator _burndownCalculator = new();
+        public DiagramGenerator(ITelegramBotClient telegramBot, YouTrackClient youTrackClient)
+        {
+            _telegramBot = telegramBot;
+            _youTrackClient = youTrackClient;
+        }
+        public async Task GenerateAndSendDiagram(string chatId)
+        {
+            var sprint = await _youTrackClient.GetSprintDuration();
+            var issues = await _youTrackClient.GetSprintIssues();
+            var burndownData = _burndownCalculator.CalculateBurndown(sprint, issues);
 
             // Diagram generation using ScottPlot
             ScottPlot.Plot myPlot = new();
-            var idealScatter = myPlot.Add.Scatter(xDays, idealLine);
+            var idealScatter = myPlot.Add.Scatter(burndownData.XDays, burndownData.IdealLine);
             idealScatter.Color = ScottPlot.Colors.Green;
             idealScatter.LineStyle.Pattern = ScottPlot.LinePattern.Solid;
 
-            var progressScatter = myPlot.Add.Scatter(yDays, progressLine);
+            var progressScatter = myPlot.Add.Scatter(burndownData.YDays, burndownData.ProgressLine);
             progressScatter.Color = ScottPlot.Colors.Blue;
             progressScatter.LineStyle.Pattern = ScottPlot.LinePattern.Solid;
 
@@ -198,7 +246,9 @@ namespace YouTrackData
             await using var photoStream = File.OpenRead("diagram.png");
             await _telegramBot.SendPhoto(chatId, Telegram.Bot.Types.InputFile.FromStream(photoStream, "diagram.png"));
         }
-
+    }
+    public class ConfigReader
+    {
         public static (string youTrackToken, string telegramToken, string chatId) ReadConfig()
         {
             var config = new ConfigurationBuilder()
@@ -216,19 +266,4 @@ namespace YouTrackData
             return (youTrackToken, telegramToken, chatId);
         }
     }
-    //telegram send 
-    //var photo = @"diagram.png";
-    //var url = $"https://api.telegram.org/bot{botToken}/sendPhoto";
-
-    //using var content = new MultipartFormDataContent();
-    //content.Add(new StringContent(chatId), "chat_id");
-
-    //var fileBytes = await File.ReadAllBytesAsync(photo);
-    //var fileContent = new ByteArrayContent(fileBytes);
-
-    //fileContent.Headers.ContentType = new MediaTypeHeaderValue("image/jpeg");
-    //content.Add(fileContent, "photo", Path.GetFileName(photo));
-
-    //var tgResponse = await client.PostAsync(url, content);
-    //var tgOutput = await tgResponse.Content.ReadAsStringAsync();
 }
