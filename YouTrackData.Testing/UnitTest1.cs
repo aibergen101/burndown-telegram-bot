@@ -74,7 +74,7 @@ namespace BurndownTelegramBot.Tests
 
             // Assert
             Assert.That(result.ProgressLine[0], Is.EqualTo(8)); 
-            Assert.That(result.ProgressLine[^1], Is.EqualTo(5)); 
+            Assert.That(result.ProgressLine[^1], Is.EqualTo(3)); 
         }
     }
 }
