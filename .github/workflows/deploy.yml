@@ -24,7 +24,7 @@ jobs:
 
       - name: Build and push Docker image
         run: |
-          docker build -t ${{ secrets.DOCKER_IMAGE_NAME }} .
+          docker build -t ${{ secrets.DOCKER_IMAGE_NAME }} -f YouTrackData/Dockerfile YouTrackData/
           docker push ${{ secrets.DOCKER_IMAGE_NAME }}
 
       - name: Deploy to VPS
