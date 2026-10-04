@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="YouTrackData.Testing/YouTrackData.Testing.csproj" Id="9c815312-7150-4f6f-b0f5-a8c18c80a43c" />
+  <Project Path="YouTrackData/YouTrackData.csproj" />
+</Solution>
