@@ -4,7 +4,12 @@ using System.Text.Json;
 
 namespace YouTrackData
 {
-    public class YouTrackClient
+    public interface IYouTrackClient
+    {
+        Task<Sprint> GetSprintDuration();
+        Task<Issue[]> GetSprintIssues();
+    }
+    public class YouTrackClient : IYouTrackClient
     {
         private readonly HttpClient _httpClient;
         public YouTrackClient(string youTrackToken)
@@ -25,7 +30,7 @@ namespace YouTrackData
 
         public async Task<Issue[]> GetSprintIssues()
         {
-            var sprintName = Uri.EscapeDataString("Sprints: {2026.19T} Story points: *");
+            var sprintName = Uri.EscapeDataString("Sprints: {2026.20T} Story points: *");
             var sprintStoryPoints = await _httpClient.GetAsync($"https://acquirica.youtrack.cloud/api/issues?fields=id,resolved,customFields(name,value)&customFields=Story%20points&query={sprintName}");
             var outputStoryPoints = await sprintStoryPoints.Content.ReadAsStringAsync();
             return JsonSerializer.Deserialize<Issue[]>(outputStoryPoints, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });

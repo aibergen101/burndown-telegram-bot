@@ -5,9 +5,9 @@ namespace Scheduling
 {
     public class DailyScheduler
     {
-        private readonly DiagramGenerator _diagramGenerator;
+        private readonly IDiagramGenerator _diagramGenerator;
         private readonly string _chatId;
-        public DailyScheduler(DiagramGenerator diagramGenerator, string chatId)
+        public DailyScheduler(IDiagramGenerator diagramGenerator, string chatId)
         {
             _chatId = chatId;
             _diagramGenerator = diagramGenerator;

@@ -14,7 +14,8 @@ var (youTrackToken, telegramToken, chatId) = ConfigReader.ReadConfig();
 using var cts = new CancellationTokenSource();
 var telegramBot = new TelegramBotClient(telegramToken, cancellationToken: cts.Token);
 var youTrackClient = new YouTrackClient(youTrackToken);
-var diagramGenerator = new DiagramGenerator(telegramBot,youTrackClient);
+var burndownCalculator = new BurndownCalculator();
+var diagramGenerator = new DiagramGenerator(telegramBot,youTrackClient, burndownCalculator);
 var updateHandler = new UpdateHandler(telegramBot, diagramGenerator);
 
 updateHandler.Start();
@@ -23,4 +24,4 @@ var schedulerTask = scheduler.Scheduler(cts.Token);
 
 Log.Information("Bot is running");
 await Task.Delay(-1);
-cts.Cancel();
+cts.Cancel();   

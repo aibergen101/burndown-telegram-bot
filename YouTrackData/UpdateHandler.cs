@@ -11,9 +11,9 @@ namespace YouTrackData
     public class UpdateHandler
     {
         private readonly ITelegramBotClient _telegramBot;
-        private readonly DiagramGenerator _diagramGenerator;
+        private readonly IDiagramGenerator _diagramGenerator;
 
-        public UpdateHandler(ITelegramBotClient telegramBot, DiagramGenerator diagramGenerator)
+        public UpdateHandler(ITelegramBotClient telegramBot, IDiagramGenerator diagramGenerator)
         {
             _telegramBot = telegramBot;
             _diagramGenerator = diagramGenerator;
