@@ -1,4 +1,5 @@
-﻿using YouTrackData;
+﻿using Serilog;
+using YouTrackData;
 
 namespace Scheduling
 {
@@ -30,7 +31,7 @@ namespace Scheduling
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"Error in time sending diagram: {ex}");
+                    Log.Error(ex, "Error in time sending diagram");
                 }
             }
         }
