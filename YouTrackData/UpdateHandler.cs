@@ -4,6 +4,7 @@ using Telegram.Bot.Polling;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.ReplyMarkups;
+using Serilog;
 
 namespace YouTrackData
 {
@@ -29,7 +30,7 @@ namespace YouTrackData
         }
         public async Task OnError(Exception exception, HandleErrorSource source)
         {
-            Console.WriteLine(exception);
+            Log.Error(exception, "An error occurred");
         }
         public async Task OnMessage(Message msg, UpdateType type)
         {
@@ -57,7 +58,7 @@ namespace YouTrackData
             }
             catch (ApiRequestException ex)
             {
-                Console.WriteLine($"AnswerCallbackQuery failed (Id={query.Id}): {ex.Message}");
+                Log.Error(ex, "AnswerCallbackQuery failed (Id={query.Id}):", query.Id);
             }
 
             try
@@ -66,8 +67,8 @@ namespace YouTrackData
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex);
-                await _telegramBot.SendMessage(chatId, "Не удалось построить диаграмму, попробуйте позже");
+                Log.Error(ex, "Failed to generate and send diagram for chat {ChatId}", chatId);
+                await _telegramBot.SendMessage(chatId, "Could not generate diagram, please try again later");
             }
         }
     }

@@ -18,7 +18,6 @@ namespace YouTrackData
             var issues = await _youTrackClient.GetSprintIssues();
             var burndownData = _burndownCalculator.CalculateBurndown(sprint, issues);
 
-            // Diagram generation using ScottPlot
             ScottPlot.Plot myPlot = new();
             var idealScatter = myPlot.Add.Scatter(burndownData.XDays, burndownData.IdealLine);
             idealScatter.Color = ScottPlot.Colors.Green;
