@@ -2,15 +2,21 @@
 
 namespace YouTrackData
 {
-    public class DiagramGenerator
+    public interface IDiagramGenerator
+    {
+        Task GenerateAndSendDiagram(string chatId);
+    }
+
+    public class DiagramGenerator : IDiagramGenerator
     {
         private readonly ITelegramBotClient _telegramBot;
-        private readonly YouTrackClient _youTrackClient;
-        private readonly BurndownCalculator _burndownCalculator = new();
-        public DiagramGenerator(ITelegramBotClient telegramBot, YouTrackClient youTrackClient)
+        private readonly IYouTrackClient _youTrackClient;
+        private readonly IBurndownCalculator _burndownCalculator;
+        public DiagramGenerator(ITelegramBotClient telegramBot, IYouTrackClient youTrackClient, IBurndownCalculator burndownCalculator)
         {
             _telegramBot = telegramBot;
             _youTrackClient = youTrackClient;
+            _burndownCalculator = burndownCalculator;
         }
         public async Task GenerateAndSendDiagram(string chatId)
         {
