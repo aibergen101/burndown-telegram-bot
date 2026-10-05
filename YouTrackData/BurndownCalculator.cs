@@ -2,7 +2,11 @@
 
 namespace YouTrackData
 {
-    public class BurndownCalculator
+    public interface IBurndownCalculator
+    {
+        BurndownData CalculateBurndown(Sprint sprint, Issue[] issues);
+    }
+    public class BurndownCalculator : IBurndownCalculator
     {
         public BurndownData CalculateBurndown(Sprint sprint, Issue[] issues)
         { 
