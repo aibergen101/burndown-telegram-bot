@@ -2,10 +2,6 @@
 
 namespace YouTrackData
 {
-    public interface IDiagramGenerator
-    {
-        Task GenerateAndSendDiagram(string chatId);
-    }
 
     public class DiagramGenerator : IDiagramGenerator
     {
