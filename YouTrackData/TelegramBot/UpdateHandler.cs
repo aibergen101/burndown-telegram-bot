@@ -34,8 +34,6 @@ namespace YouTrackData
         }
         public async Task OnMessage(Message msg, UpdateType type)
         {
-            // если будет больше 2 команд, разделить на отдельные методы, чтобы не перегружать метод OnMessage
-            // с помощью создания интерфейса, который будет вызывать подходящие методы 
             if (msg.Text == "/start")
             {
                 await _telegramBot.SendMessage(msg.Chat, "Press the button to see a diagram",

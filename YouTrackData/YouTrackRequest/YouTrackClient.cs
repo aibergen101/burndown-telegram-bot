@@ -4,11 +4,6 @@ using System.Text.Json;
 
 namespace YouTrackData
 {
-    public interface IYouTrackClient
-    {
-        Task<Sprint> GetSprintDuration();
-        Task<Issue[]> GetSprintIssues();
-    }
     public class YouTrackClient : IYouTrackClient
     {
         private readonly HttpClient _httpClient;
