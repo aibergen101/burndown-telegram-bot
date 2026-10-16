@@ -22,7 +22,8 @@ namespace Scheduling
             {
                 var now = DateTime.Now;
                 var time = now.Date.AddHours(10).AddMinutes(14);
-                if (now >= time) time = time.AddDays(1);
+                if (now >= time) 
+                    time = time.AddDays(1);
 
                 while (time.DayOfWeek == DayOfWeek.Saturday || time.DayOfWeek == DayOfWeek.Sunday)
                 {
