@@ -1,27 +1,25 @@
 ﻿using Models;
 using System.Net.Http.Headers;
 using System.Text.Json;
+using Microsoft.Extensions.Logging;
 
-namespace YouTrackData
+namespace YouTrackData.Clients
 {
-    public interface IYouTrackClient
-    {
-        Task<Sprint> GetSprintDuration();
-        Task<Issue[]> GetSprintIssues();
-    }
     public class YouTrackClient : IYouTrackClient
     {
         private readonly HttpClient _httpClient;
-        public YouTrackClient(string youTrackToken)
+        private readonly ILogger<YouTrackClient> _logger;
+        public YouTrackClient(string youTrackToken, ILogger<YouTrackClient> logger)
         {
             _httpClient = new HttpClient();
+            _logger = logger;
             _httpClient.DefaultRequestHeaders.Authorization =
                 new AuthenticationHeaderValue("Bearer", youTrackToken);
             _httpClient.DefaultRequestHeaders.Accept.Add(
                 new MediaTypeWithQualityHeaderValue("application/json"));
         }
 
-        public async Task<Sprint> GetSprintDuration()
+        public async Task<Sprint> GetSprint()
         {
             var sprintDuration = await _httpClient.GetAsync("https://acquirica.youtrack.cloud/api/agiles/176-23/sprints/current?fields=start,finish");
             var outputDuration = await sprintDuration.Content.ReadAsStringAsync();

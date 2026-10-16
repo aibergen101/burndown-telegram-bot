@@ -1,27 +1,36 @@
-﻿using Scheduling;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using Scheduling;
 using Telegram.Bot;
 using YouTrackData;
-using Serilog;
-
-using var log = new LoggerConfiguration()
-    .WriteTo.Console()
-    .CreateLogger();
-Log.Logger = log;
-
+using YouTrackData.Clients;
+using TelegramClient;
 
 var (youTrackToken, telegramToken, chatId) = ConfigReader.ReadConfig();
 
-using var cts = new CancellationTokenSource();
-var telegramBot = new TelegramBotClient(telegramToken, cancellationToken: cts.Token);
-var youTrackClient = new YouTrackClient(youTrackToken);
-var burndownCalculator = new BurndownCalculator();
-var diagramGenerator = new DiagramGenerator(telegramBot,youTrackClient, burndownCalculator);
-var updateHandler = new UpdateHandler(telegramBot, diagramGenerator);
+HostApplicationBuilder builder = Host.CreateApplicationBuilder(args);
 
-updateHandler.Start();
-var scheduler = new DailyScheduler(diagramGenerator, chatId);
-var schedulerTask = scheduler.Scheduler(cts.Token);
+builder.Services.AddSingleton<IImageSender, ImageSender>();
+builder.Services.AddSingleton<ITelegramRequestHandler, TelegramRequestHandler>();
+builder.Services.AddSingleton<UpdateHandler>();
+builder.Services.AddSingleton<IYouTrackClient>(sp =>
+    new YouTrackClient(youTrackToken, sp.GetRequiredService<ILogger<YouTrackClient>>()));
+builder.Services.AddSingleton<IBurndownCalculator, BurndownCalculator>();
+builder.Services.AddSingleton<IBurndownService, BurndownService>();
+builder.Services.AddSingleton<IDiagramGenerator, DiagramGenerator>();
 
-Log.Information("Bot is running");
-await Task.Delay(-1);
-cts.Cancel();   
+builder.Services.AddSingleton(_ => new TelegramBotClient(telegramToken));
+builder.Services.AddSingleton<ITelegramBotClient>(sp => sp.GetRequiredService<TelegramBotClient>());
+
+
+builder.Services.AddHostedService(sp => new DailyScheduler(
+    sp.GetRequiredService<ITelegramRequestHandler>(),
+    chatId,
+    sp.GetRequiredService<ILogger<DailyScheduler>>()));
+
+using var host = builder.Build();
+
+host.Services.GetRequiredService<UpdateHandler>().Start();
+host.Run();
+
