@@ -7,7 +7,7 @@ using YouTrackData;
 using YouTrackData.Clients;
 using TelegramClient;
 
-var (youTrackToken, telegramToken, chatId) = ConfigReader.ReadConfig();
+var (youTrackToken, telegramToken, chatId, allowedIds) = ConfigReader.ReadConfig();
 
 HostApplicationBuilder builder = Host.CreateApplicationBuilder(args);
 
@@ -23,11 +23,12 @@ builder.Services.AddSingleton<IDiagramGenerator, DiagramGenerator>();
 builder.Services.AddSingleton(_ => new TelegramBotClient(telegramToken));
 builder.Services.AddSingleton<ITelegramBotClient>(sp => sp.GetRequiredService<TelegramBotClient>());
 
-
 builder.Services.AddHostedService(sp => new DailyScheduler(
     sp.GetRequiredService<ITelegramRequestHandler>(),
     chatId,
     sp.GetRequiredService<ILogger<DailyScheduler>>()));
+
+builder.Services.AddSingleton<IAccessControl>(new AccessControl(allowedIds));
 
 using var host = builder.Build();
 
