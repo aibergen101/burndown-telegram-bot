@@ -9,7 +9,7 @@ RUN dotnet restore YouTrackData/YouTrackData.csproj
 COPY YouTrackData/ YouTrackData/
 COPY YouTrackClient/ YouTrackClient/
 COPY TelegramClient/ TelegramClient/
-RUN dotnet publish YouTrackData/YouTrackData.csproj -c Release -o /app/publish --no-restore
+RUN dotnet publish YouTrackData/YouTrackData.csproj -c Release -o /app/publish
 
 FROM mcr.microsoft.com/dotnet/runtime:10.0 AS final
 WORKDIR /app
