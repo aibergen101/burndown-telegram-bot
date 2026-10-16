@@ -2,7 +2,7 @@ name: Deploy .NET apps into non-production VPS
 
 on:
   push:
-    branches: [main]
+    branches: [uat]
 
 jobs:
   build-and-deploy:
