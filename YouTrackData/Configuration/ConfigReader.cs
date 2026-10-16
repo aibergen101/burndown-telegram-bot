@@ -4,13 +4,16 @@ namespace YouTrackData
 {
     public class ConfigReader
     {
-        public static (string youTrackToken, string telegramToken, string chatId) ReadConfig()
+        public static (string youTrackToken, string telegramToken, string chatId, HashSet<long> allowedIds) ReadConfig()
         {
             var config = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json", optional: true)
                 .AddEnvironmentVariables()
                 .Build();
-
+            var allowedIds = (config["AllowedUserIds"] ?? "")
+                .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+                .Select(long.Parse)
+                .ToHashSet();
             var youTrackToken = config["YouTrackToken"]
                 ?? throw new InvalidOperationException("YouTrackToken is not configured");
             var telegramToken = config["TelegramToken"]
@@ -18,7 +21,7 @@ namespace YouTrackData
             var chatId = config["ChatId"]
                 ?? throw new InvalidOperationException("ChatId is not configured");
 
-            return (youTrackToken, telegramToken, chatId);
+            return (youTrackToken, telegramToken, chatId, allowedIds);
         }
     }
 }

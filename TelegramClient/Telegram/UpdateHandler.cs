@@ -13,11 +13,13 @@ namespace TelegramClient
         private readonly TelegramBotClient _telegramBot;
         private readonly ILogger<UpdateHandler> _logger;
         private readonly ITelegramRequestHandler _handler;
-
-        public UpdateHandler(TelegramBotClient telegramBot, ITelegramRequestHandler handler, ILogger<UpdateHandler> logger)
+        private readonly IAccessControl _accessControl;
+        public UpdateHandler(TelegramBotClient telegramBot, ITelegramRequestHandler handler,
+            IAccessControl access, ILogger<UpdateHandler> logger, IAccessControl accessControl)
         {
             _telegramBot = telegramBot;
             _handler = handler;
+            _accessControl = accessControl;
             _logger = logger;
         }
 
@@ -33,6 +35,11 @@ namespace TelegramClient
         }
         public async Task OnMessage(Message msg, UpdateType type)
         {
+            if (!_accessControl.IsAllowed(msg.From?.Id))   
+            {
+                _logger.LogWarning("Access denied for user {UserId}", msg.From?.Id);
+                return;
+            }
             if (msg.Text == "/start")
             {
                 await _telegramBot.SendMessage(msg.Chat, "Press the button to see a diagram",
@@ -43,6 +50,13 @@ namespace TelegramClient
         {
             if (update.CallbackQuery is not { } query)
                 return;
+
+            if (!_accessControl.IsAllowed(query.From.Id))
+            {
+                _logger.LogWarning("Access denied for user {UserId}", query.From.Id);
+                await _telegramBot.AnswerCallbackQuery(query.Id, "No access");
+                return;
+            }
 
             if (query.Message is null)
                 return;
@@ -55,7 +69,7 @@ namespace TelegramClient
             }
             catch (ApiRequestException ex)
             {
-                _logger.LogError(ex, "AnswerCallbackQuery failed (Id={query.Id}):", query.Id);
+                _logger.LogWarning(ex, "AnswerCallbackQuery failed (Id={QueryId})", query.Id);
             }
 
             try
