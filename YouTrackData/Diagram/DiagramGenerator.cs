@@ -6,6 +6,11 @@
         {
             ScottPlot.Plot myPlot = new();
             myPlot.Axes.DateTimeTicksBottom();
+
+            myPlot.Axes.Bottom.TickGenerator =
+                new ScottPlot.TickGenerators.DateTimeFixedInterval(
+                    new ScottPlot.TickGenerators.TimeUnits.Day(),
+                    1);
             var bg = ScottPlot.Color.FromHex("#1b1b1b");
             var fg = ScottPlot.Color.FromHex("#d0d0d0");
             myPlot.FigureBackground.Color = bg;
