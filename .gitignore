@@ -1,5 +1,5 @@
 appsettings.json
 diagram.png
+**/bin/
+**/obj/
 .vs/
-bin/
-obj/
