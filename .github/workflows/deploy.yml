@@ -46,5 +46,5 @@ jobs:
               -e YouTrackToken="${{secrets.YOUTRACK_TOKEN}}" \
               -e TelegramToken="${{secrets.TELEGRAM_TOKEN}}" \
               -e ChatId="${{secrets.CHAT_ID}}" \
-              -e AllowedUserIds="${{secrets.ALLOWED_USER_IDS}}"\
+              -e AllowedUserIds="${{vars.ALLOWED_USER_IDS}}"\
               ${{ secrets.DOCKER_IMAGE_NAME }}
