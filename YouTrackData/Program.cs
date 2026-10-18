@@ -3,9 +3,9 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Scheduling;
 using Telegram.Bot;
+using TelegramClient;
 using YouTrackData;
 using YouTrackData.Clients;
-using TelegramClient;
 
 var (youTrackToken, telegramToken, chatId, allowedIds) = ConfigReader.ReadConfig();
 
@@ -32,6 +32,9 @@ builder.Services.AddSingleton<IAccessControl>(new AccessControl(allowedIds));
 
 using var host = builder.Build();
 
+var logger = host.Services.GetRequiredService<ILogger<Program>>();
+
 host.Services.GetRequiredService<UpdateHandler>().Start();
+logger.LogInformation("Bot is running");
 host.Run();
 
