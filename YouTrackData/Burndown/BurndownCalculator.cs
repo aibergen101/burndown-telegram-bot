@@ -11,7 +11,11 @@ namespace YouTrackData
 
             int totalStoryPoints = GetTotalStoryPoints(issues);
 
-            int elapsedDays = (DateTime.Now - startDate).Days;
+            int elapsedDays = Math.Clamp(
+                (DateTime.Now.Date - startDate.Date).Days,
+                0,
+                (finishDate.Date - startDate.Date).Days);
+
             double[] progressLine = CalculateProgressLine(issues, startDate, totalStoryPoints, elapsedDays);
 
             int totalDays = (finishDate - startDate).Days;
@@ -19,6 +23,7 @@ namespace YouTrackData
 
             double[] yDays = Enumerable.Range(0, elapsedDays + 1).Select(i => startDate.AddDays(i).ToOADate()).ToArray();
             double[] xDays = Enumerable.Range(0, totalDays + 1).Select(i => startDate.AddDays(i).ToOADate()).ToArray();
+            
             return new BurndownData
             {
                 XDays = xDays,

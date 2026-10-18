@@ -37,6 +37,11 @@
             remaining.LegendText = "Remaining Effort";
 
             myPlot.ShowLegend(ScottPlot.Alignment.UpperRight);
+            myPlot.Axes.SetLimitsX(
+                burndownData.XDays.Min(),
+                burndownData.XDays.Max());
+            double maxPoints = burndownData.IdealLine[0];
+
             return myPlot.GetImageBytes(1200, 500, ScottPlot.ImageFormat.Png);
         }
     }
