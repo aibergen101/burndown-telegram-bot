@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.Logging;
-using YouTrackData;
 using Microsoft.Extensions.Hosting;
 using TelegramClient;
 
