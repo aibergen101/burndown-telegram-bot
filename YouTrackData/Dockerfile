@@ -12,8 +12,10 @@ COPY TelegramClient/ TelegramClient/
 RUN dotnet publish YouTrackData/YouTrackData.csproj -c Release -o /app/publish
 
 FROM mcr.microsoft.com/dotnet/runtime:10.0 AS final
-RUN apt-get update \
-    && apt-get install -y --no-install-recommends fontconfig fonts-dejavu-core \
+RUN apt-get update && apt-get install -y \
+    fontconfig \
+    fonts-dejavu-core \
+    && fc-cache -f -v \
     && rm -rf /var/lib/apt/lists/*
 WORKDIR /app
 COPY --from=build /app/publish .
