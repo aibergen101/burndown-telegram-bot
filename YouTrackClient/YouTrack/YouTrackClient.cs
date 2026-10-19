@@ -1,0 +1,37 @@
+﻿using Models;
+using System.Net.Http.Headers;
+using System.Text.Json;
+using Microsoft.Extensions.Logging;
+
+namespace YouTrackData.Clients
+{
+    public class YouTrackClient : IYouTrackClient
+    {
+        private readonly HttpClient _httpClient;
+        private readonly ILogger<YouTrackClient> _logger;
+        public YouTrackClient(string youTrackToken, ILogger<YouTrackClient> logger)
+        {
+            _httpClient = new HttpClient();
+            _logger = logger;
+            _httpClient.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Bearer", youTrackToken);
+            _httpClient.DefaultRequestHeaders.Accept.Add(
+                new MediaTypeWithQualityHeaderValue("application/json"));
+        }
+
+        public async Task<Sprint> GetSprint()
+        {
+            var sprintDuration = await _httpClient.GetAsync("https://acquirica.youtrack.cloud/api/agiles/176-23/sprints/current?fields=start,finish");
+            var outputDuration = await sprintDuration.Content.ReadAsStringAsync();
+            return JsonSerializer.Deserialize<Sprint>(outputDuration, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+        }
+
+        public async Task<Issue[]> GetSprintIssues()
+        {
+            var sprintName = Uri.EscapeDataString("Sprints: {2026.20T} Story points: *");
+            var sprintStoryPoints = await _httpClient.GetAsync($"https://acquirica.youtrack.cloud/api/issues?fields=id,resolved,customFields(name,value)&customFields=Story%20points&query={sprintName}");
+            var outputStoryPoints = await sprintStoryPoints.Content.ReadAsStringAsync();
+            return JsonSerializer.Deserialize<Issue[]>(outputStoryPoints, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+        }
+    }
+}
