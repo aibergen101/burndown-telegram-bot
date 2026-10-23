@@ -20,7 +20,7 @@ namespace Scheduling
             while (!token.IsCancellationRequested)
             {
                 var now = DateTime.Now;
-                var time = now.Date.AddHours(10).AddMinutes(14);
+                var time = now.Date.AddHours(11);
                 if (now >= time) 
                     time = time.AddDays(1);
 

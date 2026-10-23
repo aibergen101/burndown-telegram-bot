@@ -28,7 +28,7 @@ namespace YouTrackData.Clients
 
         public async Task<Issue[]> GetSprintIssues()
         {
-            var sprintName = Uri.EscapeDataString("Sprints: {2026.20T} Story points: *");
+            var sprintName = Uri.EscapeDataString("Board Терминалы: {Current sprint} Story points: *");
             var sprintStoryPoints = await _httpClient.GetAsync($"https://acquirica.youtrack.cloud/api/issues?fields=id,resolved,customFields(name,value)&customFields=Story%20points&query={sprintName}");
             var outputStoryPoints = await sprintStoryPoints.Content.ReadAsStringAsync();
             return JsonSerializer.Deserialize<Issue[]>(outputStoryPoints, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });

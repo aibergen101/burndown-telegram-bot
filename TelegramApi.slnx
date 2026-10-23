@@ -1,4 +1,8 @@
 <Solution>
+  <Folder Name="/Solution Items/">
+    <File Path=".dockerignore" />
+    <File Path=".gitignore" />
+  </Folder>
   <Project Path="TelegramClient/TelegramClient.csproj" Id="033ab4de-395b-4bc8-bb6e-35bcad2ebeae" />
   <Project Path="YouTrackClient/YouTrackClient.csproj" Id="c590efda-b9e7-4f67-bc00-c4918ea470d2" />
   <Project Path="YouTrackData.Testing/YouTrackData.Testing.csproj" Id="9c815312-7150-4f6f-b0f5-a8c18c80a43c" />
