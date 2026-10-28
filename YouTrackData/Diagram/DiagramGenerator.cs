@@ -21,7 +21,7 @@
             myPlot.Legend.BackgroundColor = bg;
             myPlot.Legend.FontColor = fg;
 
-            myPlot.XLabel("Срок спринта");
+            myPlot.XLabel("День спринта");
             myPlot.YLabel("Оставшиеся задачи");
 
             var ideal = myPlot.Add.Scatter(burndownData.XDays, burndownData.IdealLine);
