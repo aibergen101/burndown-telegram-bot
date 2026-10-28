@@ -14,8 +14,7 @@ namespace TelegramClient
         private readonly ILogger<UpdateHandler> _logger;
         private readonly ITelegramRequestHandler _handler;
         private readonly IAccessControl _accessControl;
-        public UpdateHandler(TelegramBotClient telegramBot, ITelegramRequestHandler handler,
-            IAccessControl access, ILogger<UpdateHandler> logger, IAccessControl accessControl)
+        public UpdateHandler(TelegramBotClient telegramBot, ITelegramRequestHandler handler, ILogger<UpdateHandler> logger, IAccessControl accessControl)
         {
             _telegramBot = telegramBot;
             _handler = handler;
