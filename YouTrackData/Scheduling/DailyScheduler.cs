@@ -9,6 +9,8 @@ namespace Scheduling
         private readonly string _chatId;
         private readonly ILogger<DailyScheduler> _logger;
         private ITelegramRequestHandler _request;
+        private static readonly TimeZoneInfo MoscowTimeZone =
+            TimeZoneInfo.FindSystemTimeZoneById("Europe/Moscow");
         public DailyScheduler(ITelegramRequestHandler request, string chatId, ILogger<DailyScheduler> logger)
         {
             _request = request;
@@ -19,19 +21,37 @@ namespace Scheduling
         {
             while (!token.IsCancellationRequested)
             {
-                var now = DateTime.Now;
-                var time = now.Date.AddHours(11).AddMinutes(15);
-                if (now >= time) 
-                    time = time.AddDays(1);
+                var nowUtc = DateTimeOffset.UtcNow;
+                var nowMoscow = TimeZoneInfo.ConvertTime(nowUtc, MoscowTimeZone);
 
-                while (time.DayOfWeek == DayOfWeek.Saturday || time.DayOfWeek == DayOfWeek.Sunday)
+                var nextRun = new DateTime(
+                    nowMoscow.Year,
+                    nowMoscow.Month,
+                    nowMoscow.Day,
+                    11, 15, 0,
+                    DateTimeKind.Unspecified);
+
+                if (nowMoscow.DateTime >= nextRun)
+                    nextRun = nextRun.AddDays(1);
+
+                while (nextRun.DayOfWeek == DayOfWeek.Saturday || nextRun.DayOfWeek == DayOfWeek.Sunday)
                 {
-                    time = time.AddDays(1);
+                    nextRun = nextRun.AddDays(1);
                 }
+
+                var nextRunUtc = TimeZoneInfo.ConvertTimeToUtc(
+                    nextRun, MoscowTimeZone);
+
+                var delay = nextRunUtc - DateTime.UtcNow;
+
+                _logger.LogInformation(
+                    "Next diagram scheduled for {MoscowTime} Moscow time ({UtcTime} UTC)",
+                    nextRun,
+                    nextRunUtc);
 
                 try
                 {
-                    await Task.Delay(time - now, token);
+                    await Task.Delay(delay, token);
                     await _request.HandleRequest(_chatId);
                 }
                 catch (OperationCanceledException)

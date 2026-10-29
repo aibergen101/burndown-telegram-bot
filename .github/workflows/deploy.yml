@@ -43,7 +43,6 @@ jobs:
               --name be \
               --restart unless-stopped \
               -p 8080:8080 \
-              -e TZ=Europe/Moscow \
               -e YouTrackToken="${{secrets.YOUTRACK_TOKEN}}" \
               -e TelegramToken="${{secrets.TELEGRAM_TOKEN}}" \
               -e ChatId="${{secrets.CHAT_ID}}" \
