@@ -16,10 +16,10 @@ namespace YouTrackData
             _imageSender = imageSender;
             _logger = logger;
         }
-        public async Task HandleRequest(string chatId)
+        public async Task HandleRequest(string chatId, ChartTheme theme)
         {
             BurndownData burndownData = await _burndownService.GetCurrentBurndown();
-            byte[] png = _diagramGenerator.GenerateDiagram(burndownData);
+            byte[] png = _diagramGenerator.GenerateDiagram(burndownData, theme);
             await _imageSender.SendDiagram(chatId, png);
         }
     }

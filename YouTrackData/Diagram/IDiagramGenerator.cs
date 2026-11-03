@@ -1,7 +1,9 @@
-﻿namespace YouTrackData
+﻿using TelegramClient;
+
+namespace YouTrackData
 {
     public interface IDiagramGenerator
     {
-        byte[] GenerateDiagram(BurndownData burndownData);
+        byte[] GenerateDiagram(BurndownData burndownData, ChartTheme theme);
     }
 }

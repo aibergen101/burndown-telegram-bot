@@ -45,14 +45,14 @@ namespace Scheduling
                 var delay = nextRunUtc - DateTime.UtcNow;
 
                 _logger.LogInformation(
-                    "Next diagram scheduled for {MoscowTime} Moscow time ({UtcTime} UTC)",
+                    "Следующая диаграмма будет отправлена {MoscowTime} по Москве ({UtcTime} UTC)",
                     nextRun,
                     nextRunUtc);
 
                 try
                 {
                     await Task.Delay(delay, token);
-                    await _request.HandleRequest(_chatId);
+                    await _request.HandleRequest(_chatId,ChartTheme.Dark);
                 }
                 catch (OperationCanceledException)
                 {
@@ -60,7 +60,7 @@ namespace Scheduling
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogError(ex, "Error in time sending diagram");
+                    _logger.LogError(ex, "Ошибка при отправке диаграммы");
                 }
             }
         }

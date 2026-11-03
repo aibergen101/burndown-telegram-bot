@@ -35,6 +35,6 @@ using var host = builder.Build();
 var logger = host.Services.GetRequiredService<ILogger<Program>>();
 
 host.Services.GetRequiredService<UpdateHandler>().Start();
-logger.LogInformation("Bot is running");
+logger.LogInformation("Бот запущен");
 host.Run();
 

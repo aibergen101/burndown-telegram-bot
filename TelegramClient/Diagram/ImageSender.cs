@@ -14,7 +14,7 @@ namespace TelegramClient
         }
         public async Task SendDiagram(string chatId, byte[] photoData)
         {
-            _logger.LogInformation("Sending diagram to chat {chatId}", chatId);
+            _logger.LogInformation("Отправляю диаграмму в чат {chatId}", chatId);
             await _telegramBot.SendPhoto(chatId, Telegram.Bot.Types.InputFile.FromStream(new MemoryStream(photoData), "diagram.png"));
         }
     }

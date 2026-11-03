@@ -30,19 +30,27 @@ namespace TelegramClient
         }
         public async Task OnError(Exception exception, HandleErrorSource source)
         {
-            _logger.LogError(exception, "An error occurred");
+            _logger.LogError(exception, "Произошла ошибка");
         }
         public async Task OnMessage(Message msg, UpdateType type)
         {
             if (!_accessControl.IsAllowed(msg.From?.Id))   
             {
-                _logger.LogWarning("Access denied for user {UserId}", msg.From?.Id);
+                _logger.LogWarning("Доступ отклонен для пользователя {UserId}", msg.From?.Id);
                 return;
             }
             if (msg.Text == "/start")
             {
-                await _telegramBot.SendMessage(msg.Chat, "Press the button to see a diagram",
-                    replyMarkup: new InlineKeyboardButton[] { "Sprint Diagram" });
+                await _telegramBot.SendMessage(msg.Chat, "Нажми кнопку ниже, и я пришлю диаграмму по текущим данным спринта.",
+                    replyMarkup: new InlineKeyboardButton[] { "📊 Получить диаграмму" });
+            }
+            else if(msg.Text == "/help")
+            {
+                await _telegramBot.SendMessage(msg.Chat, "🤖 Бот спринта\nЯ строю диаграмму по текущим данным спринта.\n\nЧто умею:\n/start: главное меню с кнопкой\n/help: справку");
+            }
+            else
+            {
+                await _telegramBot.SendMessage(msg.Chat, "Я понимаю только команды. Нажми /start или /help");
             }
         }
         public async Task OnUpdate(Update update)
@@ -52,7 +60,7 @@ namespace TelegramClient
 
             if (!_accessControl.IsAllowed(query.From.Id))
             {
-                _logger.LogWarning("Access denied for user {UserId}", query.From.Id);
+                _logger.LogWarning("Доступ отклонен для пользователя {UserId}", query.From.Id);
                 await _telegramBot.AnswerCallbackQuery(query.Id, "No access");
                 return;
             }
@@ -68,17 +76,26 @@ namespace TelegramClient
             }
             catch (ApiRequestException ex)
             {
-                _logger.LogWarning(ex, "AnswerCallbackQuery failed (Id={QueryId})", query.Id);
+                _logger.LogWarning(ex, "Сбой при выполнении AnswerCallbackQuery (Id={QueryId})", query.Id);
             }
+            if (query.Data == "📊 Получить диаграмму")
+            {
+                await _telegramBot.SendMessage(chatId, "Выбери тему диаграммы:",
+                    replyMarkup: new InlineKeyboardButton[] { "☀️ Светлая", "🌙 Тёмная" });
+            }
+            else if (query.Data == "☀️ Светлая" || query.Data == "🌙 Тёмная")
+            {
+                var theme = query.Data == "☀️ Светлая" ? ChartTheme.Light : ChartTheme.Dark;
 
-            try
-            {
-                await _handler.HandleRequest(chatId);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Failed to generate and send diagram for chat {ChatId}", chatId);
-                await _telegramBot.SendMessage(chatId, "Could not generate diagram, please try again later");
+                try
+                {
+                    await _handler.HandleRequest(chatId.ToString(), theme);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Не удалось создать и отправить диаграмму для чата {ChatId}", chatId);
+                    await _telegramBot.SendMessage(chatId, "Не удалось создать диаграмму, пожалуйста, попробуйте позже");
+                }
             }
         }
     }
