@@ -2,6 +2,6 @@
 {
     public interface ITelegramRequestHandler
     {
-        Task HandleRequest(string request);
+        Task HandleRequest(string request, ChartTheme theme);
     }
 }

@@ -1,8 +1,10 @@
-﻿namespace YouTrackData
+﻿using TelegramClient;
+
+namespace YouTrackData
 {
     public class DiagramGenerator : IDiagramGenerator
     {
-        public byte[] GenerateDiagram(BurndownData burndownData)
+        public byte[] GenerateDiagram(BurndownData burndownData, ChartTheme theme)
         {
             ScottPlot.Plot myPlot = new();
             myPlot.Axes.DateTimeTicksBottom();
@@ -11,13 +13,30 @@
                 new ScottPlot.TickGenerators.DateTimeFixedInterval(
                     new ScottPlot.TickGenerators.TimeUnits.Day(),
                     1);
-            var bg = ScottPlot.Color.FromHex("#1b1b1b");
-            var fg = ScottPlot.Color.FromHex("#d0d0d0");
+            ScottPlot.Color bg, fg, grid, idealColor, remainingColor;
+
+            if (theme == ChartTheme.Dark)
+            {
+                bg = ScottPlot.Color.FromHex("#1b1b1b");
+                fg = ScottPlot.Color.FromHex("#d0d0d0");
+                grid = ScottPlot.Color.FromHex("#444444");
+                idealColor = ScottPlot.Color.FromHex("#8db600");
+                remainingColor = ScottPlot.Color.FromHex("#29b6f6");
+            }
+            else
+            {
+                bg = ScottPlot.Color.FromHex("#ffffff");
+                fg = ScottPlot.Color.FromHex("#222222");
+                grid = ScottPlot.Color.FromHex("#d9d9d9");
+                idealColor = ScottPlot.Color.FromHex("#5f8a00");    
+                remainingColor = ScottPlot.Color.FromHex("#0277bd");
+            }
+
             myPlot.FigureBackground.Color = bg;
             myPlot.DataBackground.Color = bg;
             myPlot.Axes.Color(fg);
             myPlot.Axes.Title.Label.ForeColor = fg;
-            myPlot.Grid.MajorLineColor = ScottPlot.Color.FromHex("#444444");
+            myPlot.Grid.MajorLineColor = grid;
             myPlot.Legend.BackgroundColor = bg;
             myPlot.Legend.FontColor = fg;
 
@@ -25,13 +44,13 @@
             myPlot.YLabel("Оставшиеся задачи");
 
             var ideal = myPlot.Add.Scatter(burndownData.XDays, burndownData.IdealLine);
-            ideal.Color = ScottPlot.Color.FromHex("#8db600");
+            ideal.Color = idealColor;
             ideal.LineWidth = 2;
             ideal.MarkerSize = 0;
             ideal.LegendText = "Ideal Burndown";
 
             var remaining = myPlot.Add.Scatter(burndownData.YDays, burndownData.ProgressLine);
-            remaining.Color = ScottPlot.Color.FromHex("#29b6f6");
+            remaining.Color = remainingColor;
             remaining.LineWidth = 2;
             remaining.MarkerSize = 0;
             remaining.LegendText = "Remaining Effort";
@@ -40,7 +59,6 @@
             myPlot.Axes.SetLimitsX(
                 burndownData.XDays.Min(),
                 burndownData.XDays.Max());
-            double maxPoints = burndownData.IdealLine[0];
 
             return myPlot.GetImageBytes(1200, 500, ScottPlot.ImageFormat.Png);
         }
