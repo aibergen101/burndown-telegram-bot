@@ -16,7 +16,7 @@ namespace YouTrackData
                 .ToHashSet();
             var youTrackToken = config["YouTrackToken"]
                 ?? throw new InvalidOperationException("YouTrackToken is not configured");
-            var telegramToken = config["TelegramToken1"]
+            var telegramToken = config["TelegramToken"]
                 ?? throw new InvalidOperationException("TelegramToken is not configured");
             var chatId = config["ChatId"]
                 ?? throw new InvalidOperationException("ChatId is not configured");
