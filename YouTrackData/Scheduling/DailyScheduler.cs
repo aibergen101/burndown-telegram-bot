@@ -8,15 +8,19 @@ namespace Scheduling
     {
         private readonly string _chatId;
         private readonly ILogger<DailyScheduler> _logger;
+        // это не request, а requestHandler 
         private ITelegramRequestHandler _request;
         private static readonly TimeZoneInfo MoscowTimeZone =
             TimeZoneInfo.FindSystemTimeZoneById("Europe/Moscow");
+        
+        // Тут тоже, инжектить надо класс, конфиг, а не просто строку
         public DailyScheduler(ITelegramRequestHandler request, string chatId, ILogger<DailyScheduler> logger)
         {
             _request = request;
             _chatId = chatId;
             _logger = logger;
         }
+        // между методами лучше все-таки оставлять пустые строки
         protected override async Task ExecuteAsync(CancellationToken token)
         {
             while (!token.IsCancellationRequested)
@@ -56,6 +60,8 @@ namespace Scheduling
                 }
                 catch (OperationCanceledException)
                 {
+                    //  перехватывает исключения не только от Task.Delay, но и от HandleRequest - то есть при срабатывании, например если HttpClient остановится по таймауту, рассылка может остановиться навсегда
+                    //  catch (OperationCanceledException) when (token.IsCancellationRequested) - так будет правильнее
                     break;
                 }
                 catch (Exception ex)
@@ -63,6 +69,32 @@ namespace Scheduling
                     _logger.LogError(ex, "Ошибка при отправке диаграммы");
                 }
             }
+            
+            // Можно проще написать, типа такого:
+            
+            //         while (!token.IsCancellationRequested)
+            // {
+            //     var now = TimeZoneInfo.ConvertTime(DateTime.UtcNow, Moscow);
+            //     var next = now.Date + RunAt;
+            //     if (next <= now) next = next.AddDays(1);
+            //     while (next.DayOfWeek is DayOfWeek.Saturday or DayOfWeek.Sunday) next = next.AddDays(1);
+
+            //     logger.LogInformation("Следующая диаграмма: {Next} МСК", next);
+
+            //     try
+            //     {
+            //         await Task.Delay(next - now, token);
+            //         await handler.HandleRequest(chatId, ChartTheme.Dark);
+            //     }
+            //     catch (OperationCanceledException) when (token.IsCancellationRequested)
+            //     {
+            //         break;
+            //     }
+            //     catch (Exception ex)
+            //     {
+            //         logger.LogError(ex, "Ошибка при отправке диаграммы");
+            //     }
+            // }
         }
     }
 }

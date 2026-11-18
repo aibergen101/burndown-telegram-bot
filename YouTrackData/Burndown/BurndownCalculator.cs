@@ -33,6 +33,7 @@ namespace YouTrackData
             };
         }
 
+        // Этот метод не используется снаружи и не должен быть публичным
         public static int GetTotalStoryPoints(Issue[] issues)
         {
             int totalStoryPoints = 0;
@@ -44,6 +45,7 @@ namespace YouTrackData
             return totalStoryPoints;
         }
 
+        // Этот метод не используется снаружи и не должен быть публичным
         public static double[] CalculateIdealLine(int totalStoryPoints, int totalDays)
         {
             double[] idealLine = new double[totalDays + 1];
@@ -56,6 +58,7 @@ namespace YouTrackData
             return idealLine;
         }
 
+        // Этот метод не используется снаружи и не должен быть публичным
         public static double[] CalculateProgressLine(Issue[] issues, DateTime startDate, int totalStoryPoints, int currentDays)
         {
             double[] progressLine = new double[currentDays + 1];

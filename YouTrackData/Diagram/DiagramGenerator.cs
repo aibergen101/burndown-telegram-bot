@@ -6,6 +6,7 @@ namespace YouTrackData
     {
         public byte[] GenerateDiagram(BurndownData burndownData, ChartTheme theme)
         {
+            // Метод очень длинный, нужно поделить его на логические куски, вынос в приватные методы
             ScottPlot.Plot myPlot = new();
             myPlot.Axes.DateTimeTicksBottom();
 

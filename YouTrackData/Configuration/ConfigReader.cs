@@ -6,10 +6,12 @@ namespace YouTrackData
     {
         public static (string youTrackToken, string telegramToken, string chatId, HashSet<long> allowedIds) ReadConfig()
         {
+            // Надо уточнить, не работает ли это автоматом
             var config = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json", optional: true)
                 .AddEnvironmentVariables()
                 .Build();
+            // Если AllowedUserIds пустой, бот молча всем отказывает - стоит хотя бы залогировать warning при старте
             var allowedIds = (config["AllowedUserIds"] ?? "")
                 .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
                 .Select(long.Parse)

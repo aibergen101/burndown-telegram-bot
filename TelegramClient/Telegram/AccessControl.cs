@@ -4,6 +4,7 @@
     {
         bool IsAllowed(long? userId);
     }
+    // Контракт и реализацию лучше разнести по разным файлам и папкам в целом
     public class AccessControl : IAccessControl
     {
         private readonly HashSet<long> _allowed;
