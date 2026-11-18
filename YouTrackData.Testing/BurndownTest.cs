@@ -3,6 +3,8 @@ using YouTrackData;
 using Models;
 using System.Collections.Generic;
 
+// Нэймспэйсы неправильные
+// Тестов нужно намного больше, раз в 10-20 :)
 namespace BurndownTelegramBot.Tests
 {
     public class BurndownCalculatorTests

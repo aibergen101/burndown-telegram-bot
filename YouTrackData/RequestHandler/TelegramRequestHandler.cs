@@ -3,6 +3,8 @@ using Microsoft.Extensions.Logging;
 
 namespace YouTrackData
 {
+    // Нет ли тут циклической зависимости? Зависимость интерфейсов выглядит странно - тут реализация, в инфраструктурном сервие - контракт (интерфейс)
+    // Будто бы не в ту сторону зависимости
     public class TelegramRequestHandler: ITelegramRequestHandler
     {
         private readonly IBurndownService _burndownService;

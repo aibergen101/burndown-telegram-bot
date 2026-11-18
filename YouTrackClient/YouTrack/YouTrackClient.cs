@@ -8,9 +8,15 @@ namespace YouTrackData.Clients
     public class YouTrackClient : IYouTrackClient
     {
         private readonly HttpClient _httpClient;
+        // Поле не используется
         private readonly ILogger<YouTrackClient> _logger;
+        // Лучше инжектить свойства, конфиг а не просто строку, тогда при регистрации зависимостей не придется делать вручну строки типа 
+        // builder.Services.AddSingleton<IYouTrackClient>(sp =>
+        // new YouTrackClient(youTrackToken, sp.GetRequiredService<ILogger<YouTrackClient>>())); 
+        
         public YouTrackClient(string youTrackToken, ILogger<YouTrackClient> logger)
         {
+            // HttpClient так лучше не создавать, а использовать IHttpClientFactory. Также, если сам управляешь клиентом, его надо Dispos-ить, иначе он у тебя живет вечно и отъ
             _httpClient = new HttpClient();
             _logger = logger;
             _httpClient.DefaultRequestHeaders.Authorization =
